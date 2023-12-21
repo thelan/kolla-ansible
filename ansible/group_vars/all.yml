@@ -308,6 +308,7 @@ ceph_rgw_port: "6780"
 cinder_internal_fqdn: "{{ kolla_internal_fqdn }}"
 cinder_external_fqdn: "{{ kolla_external_fqdn }}"
 cinder_api_port: "8776"
+cinder_api_public_port: "{{ haproxy_single_external_frontend_public_port if haproxy_single_external_frontend | bool else cinder_api_port }}"
 cinder_api_listen_port: "{{ cinder_api_port }}"
 
 cloudkitty_api_port: "8889"
@@ -842,6 +843,8 @@ kolla_admin_openrc_cacert: ""
 kolla_copy_ca_into_containers: "no"
 haproxy_backend_cacert: "{{ 'ca-certificates.crt' if kolla_base_distro in ['debian', 'ubuntu'] else 'ca-bundle.trust.crt' }}"
 haproxy_backend_cacert_dir: "/etc/ssl/certs"
+haproxy_single_external_frontend: false
+haproxy_single_external_frontend_public_port: "{{ '443' if kolla_enable_tls_external | bool else '80' }}"
 
 ##################
 # Backend options
@@ -1290,3 +1293,9 @@ keystone_identity_mappings: []
 
 # this is UDP port
 hacluster_corosync_port: 5405
+
+############
+# Retrofit
+############
+run_default_volumes_docker: []
+
