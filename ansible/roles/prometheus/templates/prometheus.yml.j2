@@ -24,7 +24,7 @@ scrape_configs:
         - '{{ 'api' | kolla_address(host) | put_address_in_context('url') }}:{{ prometheus_port }}'
 {% endfor %}
 
-{% if enable_prometheus_node_exporter | bool or force_enable_prometheus_node_exporter | bool %}
+{% if (enable_prometheus_node_exporter | bool) or (force_enable_prometheus_node_exporter | bool) %}
   - job_name: node
     static_configs:
       - targets:
